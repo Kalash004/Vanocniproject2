@@ -51,8 +51,7 @@
             let isAnswerAdded = false;
             createdColors = [];
             for (var q = 0; q<amount; q++) { // generating color for each circle
-                console.log("test")
-                if (!isAnswerAdded) {
+                if (!isAnswerAdded) { // TODO: add answer
                     let randomnum = Math.floor(Math.random() * 10);
                     if (randomnum == 1) {
                         isAnswerAdded = true;
@@ -69,20 +68,24 @@
                     g: getRandomColor(),
                     b: getRandomColor()
                 } 
-                let button = document.getElementById("button"+q);
-                console.log("button : "+q)
-                button.style.color = color.r+""+color.g+""+color.b
-                console.log(color.r+""+color.g+""+color.b);
                 for (var p = 0; p<createdColors.length; p++) { // checking for same colors in game
                     if (color.r == createdColors[p].r && color.g == createdColors[p].g && color.b == createdColors[p].b) {
                         q--;
                     }
                 }
+                let button = document.getElementById("button"+q);
+                console.log("button : "+q)
+                button.style.backgroundColor = "#"+color.r+""+color.g+""+color.b;
+                console.log("#"+color.r+""+color.g+""+color.b);
             }
         }
         
         function getRandomColor() {
-            return (Math.floor(Math.random() * 254)+1).toString(16);
+            let num = (Math.floor(Math.random() * 254)+1).toString(16);
+            if (num.length == 1) {
+                num = num+""+0;
+            } 
+            return num;
         }
         
         function addElement(number,lastbutton) {
@@ -92,6 +95,7 @@
             newButton.style.width = "100px";
             newButton.style.height = "100px";
             newButton.style.borderRadius = "50%";
+            newButton.style.borderStyle = "none";
             document.getElementById("buttons").insertBefore(newButton,lastbutton);
         }
 
