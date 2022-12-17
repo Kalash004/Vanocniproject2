@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+    </head>
+    <body>
+        <span id="colorcode">colorcode</span>
+        <div id="buttons">
+            <button class="colorholder" id="button1"></button>
+        </div>
+        <h3 id="_starting_m">Guess the color</h3>
+        <!--
+            can be : Try Again. That color was #
+            or : Correct! + create button
+        -->
+        <span id="message"></span>
+        <br>
+        <label for="difficulty">Difficulty:</label>
+        <input id="difficulty" type="number">
+        <br>
+        <button onclick="main()" id="play">Play</button>
+    </body>
+    <style>
+        .colorholder {
+            width: 100px;
+            height: 100px;
+            border: black solid 1px;
+            border-radius: 50%;
+        }
+
+        #buttons {
+            display: flexbox;
+        }
+
+        input {
+            width: 50px;
+        }
+    </style>
+    <script> 
+
+        async function main() {
+            await reset();
+            let amount = Math.abs(difficulty_input.value);
+            generate(amount);
+            generateColors(amount)
+        }
+
+        function generate(amount) {
+            let difficulty_input = document.getElementById("difficulty");
+            let lastbutton = document.getElementById("button1");
+            for (let q = 0; q<amount; q++) {
+                let newb = addElement(q,lastbutton);
+                lastbutton = newb;
+            }
+        }
+        
+        
+        function generateColors(amount, color_answer) {
+            let isAnswerAdded = false;
+            let createdColors = [];
+            
+            if (!isAnswerAdded) {
+                if (getRandomInt(2) == 1) {
+                    isAnswerAdded = true;
+                }
+            } 
+            for (var q = 0; q<amount; q++) {
+                if (amount-1 == q) {
+                    // color last circle with answer color
+                    break;
+                }
+                let color = {
+                    r: getRandomColor(),
+                    g: getRandomColor(),
+                    b: getRandomColor()
+                } 
+                for (var p = 0; p<createdColors.length; p++) {
+                    if (color.r == createdColors[p].r && color.g == createdColors[p].g && color.b == createdColors[p].b) {
+                        q--;
+                    }
+                }
+            }
+        }
+        
+        function getRandomColor() {
+            return (Math.floor(Math.random() * 254)+1).toString(16);
+        }
+        
+        function addElement(number,lastbutton) {
+            const newButton = document.createElement("button");
+            newButton.setAttribute('id','button'+number);
+            newButton.setAttribute('class','colorholder');
+            newButton.appendChild(document.createTextNode(""));
+            document.getElementById("buttons").insertBefore(newButton,lastbutton);
+        }
+
+        function reset() {
+            let color_buttons = document.querySelectorAll('button[id^="butto"]');
+            color_buttons.forEach(element => {
+            element.remove();
+            console.log("removed element")
+           });
+        }
+    </script>
+</html>
