@@ -41,13 +41,13 @@
 
         async function main() {
             await reset();
+            let difficulty_input = document.getElementById("difficulty");
             let amount = Math.abs(difficulty_input.value);
             generate(amount);
             generateColors(amount)
         }
 
         function generate(amount) {
-            let difficulty_input = document.getElementById("difficulty");
             let lastbutton = document.getElementById("button1");
             for (let q = 0; q<amount; q++) {
                 let newb = addElement(q,lastbutton);
@@ -60,14 +60,18 @@
             let isAnswerAdded = false;
             let createdColors = [];
             
-            if (!isAnswerAdded) {
-                if (getRandomInt(2) == 1) {
+            for (var q = 0; q<amount; q++) { // generating color for each circle
+                if (!isAnswerAdded) {
+                    let randomnum = Math.floor(Math.random() * 10);
+                    console.log(randomnum);
+                    if (randomnum != 1) {continue}
                     isAnswerAdded = true;
+                    console.log("added question color");
                 }
-            } 
-            for (var q = 0; q<amount; q++) {
                 if (amount-1 == q) {
                     // color last circle with answer color
+                    let _lastbutton = document.getElementById("button"+amount);
+                    _lastbutton.style.backgroundColor = color_answer.r+""+color_answer.g+""+color_answer.b
                     break;
                 }
                 let color = {
@@ -75,7 +79,7 @@
                     g: getRandomColor(),
                     b: getRandomColor()
                 } 
-                for (var p = 0; p<createdColors.length; p++) {
+                for (var p = 0; p<createdColors.length; p++) { // checking for same colors in game
                     if (color.r == createdColors[p].r && color.g == createdColors[p].g && color.b == createdColors[p].b) {
                         q--;
                     }
