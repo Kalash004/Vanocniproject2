@@ -6,6 +6,7 @@
     </head>
     <body>
         <span id="colorcode">colorcode</span>
+        <span id="questioncolor"></span>
         <div id="buttons">
         </div>
         <h3 id="_starting_m">Guess the color</h3>
@@ -34,8 +35,9 @@
             await reset();
             let difficulty_input = document.getElementById("difficulty");
             let amount = Math.abs(difficulty_input.value);
+            let color = questionColor();
             generate(amount);
-            generateColors(amount)
+            generateColors(amount,color);
         }
 
         function generate(amount) {
@@ -51,18 +53,6 @@
             let isAnswerAdded = false;
             createdColors = [];
             for (var q = 0; q<amount; q++) { // generating color for each circle
-                if (!isAnswerAdded) { // TODO: add answer
-                    let randomnum = Math.floor(Math.random() * 10);
-                    if (randomnum == 1) {
-                        isAnswerAdded = true;
-                    }
-                }
-                if (amount-1 == q && !isAnswerAdded) {
-                    // color last circle with answer color
-                    let _lastbutton = document.getElementById("button"+q);
-                    _lastbutton.style.backgroundColor = color_answer.r+""+color_answer.g+""+color_answer.b;
-                    break;
-                }
                 let color = {
                     r: getRandomColor(),
                     g: getRandomColor(),
@@ -74,9 +64,21 @@
                     }
                 }
                 let button = document.getElementById("button"+q);
-                console.log("button : "+q)
                 button.style.backgroundColor = "#"+color.r+""+color.g+""+color.b;
-                console.log("#"+color.r+""+color.g+""+color.b);
+                if (!isAnswerAdded) { 
+                    let randomnum = Math.floor(Math.random() * 3);
+                    if (randomnum == 1) {
+                        isAnswerAdded = true;
+                        let button = document.getElementById("button"+q);
+                        button.style.backgroundColor = "#"+color_answer.r+""+color_answer.g+""+color_answer.b;
+                    }
+                }
+                if (amount-1 == q && !isAnswerAdded) {
+                    // color last circle with answer color
+                    let _lastbutton = document.getElementById("button"+q);
+                    _lastbutton.style.backgroundColor = "#"+color_answer.r+""+color_answer.g+""+color_answer.b;
+                    break;
+                }
             }
         }
         
@@ -99,11 +101,21 @@
             document.getElementById("buttons").insertBefore(newButton,lastbutton);
         }
 
+        function questionColor() {
+            let color = {
+                    r: getRandomColor(),
+                    g: getRandomColor(),
+                    b: getRandomColor()
+                } 
+            let questioncolor_field = document.getElementById("questioncolor");
+            questioncolor_field.innerHTML = "#"+color.r+""+color.g+""+color.b;
+            return color;
+        }
+
         function reset() {
             let color_buttons = document.querySelectorAll('button[id^="butto"]');
             color_buttons.forEach(element => {
             element.remove();
-            console.log("removed element")
            });
         }
     </script>
