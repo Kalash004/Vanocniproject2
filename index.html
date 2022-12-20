@@ -5,16 +5,16 @@
         <title>Document</title>
     </head>
     <body>
-        <span id="colorcode">colorcode</span>
+        <span id="colorcode"><h3>colorcode</h3></span> <br> 
+        <span id="questioncolor"><h3></h3></span>
         <div id="youwin">
             <h3>Win</h3>
-            <p>You Win the color was :</p>
+            <p>You Win the color was</p>
         </div>
         <div id="youlose">
             <h3>Wrong</h3>
             <p>This is not the color you are looking for, this is :</p>
         </div>  
-        <span id="questioncolor"></span>
         <div id="buttons"></div>
         <h3 id="_starting_m">Guess the color</h3>
         <!--
@@ -38,6 +38,8 @@
         }
     </style>
     <script> 
+        reset();
+
         async function main() {
             await reset();
             let difficulty_input = document.getElementById("difficulty");
@@ -109,10 +111,10 @@
             console.log(hex);
             if (hex != questioncolor_field.innerHTML) {
                 alert("You Lose");
-                deleteButton(id);
+                lose(id);
             } else {
-                alert("You Win");
-                win();
+                win(id);
+
             }
         }
 
@@ -146,24 +148,34 @@
 
         function reset() {
             let win_lose_fields = {
-                win: document.getElementById(""),
-                lose: document.getElementById("")
+                win: document.getElementById("youwin"),
+                lose: document.getElementById("youlose")
             }
+            let keys = Object.keys(win_lose_fields);
+            keys.forEach((key) => {
+                win_lose_fields[key].style.display = "none";
+            });
             let color_buttons = document.querySelectorAll('button[id^="butto"]');
             color_buttons.forEach(element => {
             element.remove();
            });
         }
     
-        function win() {
-            const winField = document.createElement("div");
-            const winText = document.createElement("p");
+        function win(id) {
+            const winField = document.getElementById("youwin");
+            const button = document.getElementById(id);
+            winField.style.display = "block";
+            button.style.borderStyle = "solid";
+            button.style.borderColor = "black";
+            button.style.borderWidth = "2px";
+        }
 
-            winField.setAttribute('id','winField');
-            winField.style.borderStyle = "none";
-            winText.innerHTML ="You Win";
-            winField.appendChild(winText);
-            document.getElementById("body").insertBefore;
+        function lose(id) {
+            const loseField = document.getElementById("youlose");
+            loseField.style.display = "block";
+            const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+            
+            deleteButton(id);
         }
         
     </script>
