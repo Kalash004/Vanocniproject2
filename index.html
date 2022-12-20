@@ -6,9 +6,16 @@
     </head>
     <body>
         <span id="colorcode">colorcode</span>
-        <span id="questioncolor"></span>
-        <div id="buttons">
+        <div id="youwin">
+            <h3>Win</h3>
+            <p>You Win the color was :</p>
         </div>
+        <div id="youlose">
+            <h3>Wrong</h3>
+            <p>This is not the color you are looking for, this is :</p>
+        </div>  
+        <span id="questioncolor"></span>
+        <div id="buttons"></div>
         <h3 id="_starting_m">Guess the color</h3>
         <!--
             can be : Try Again. That color was #
@@ -89,11 +96,36 @@
             } 
             return num;
         }
+
+        function clickingColor(id) {
+            let questioncolor_field = document.getElementById("questioncolor");
+            let button = document.getElementById(id);
+            let rgb = button.style.backgroundColor;
+
+            // this code was taken from stackoverflow to transfer rbg color from background to hex  link - https://stackoverflow.com/questions/1740700/how-to-get-hex-color-value-rather-than-rgb-value
+            const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
+            let hex = rgb2hex(rgb);
+            console.log(hex);
+            if (hex != questioncolor_field.innerHTML) {
+                alert("You Lose");
+                deleteButton(id);
+            } else {
+                alert("You Win");
+                win();
+            }
+        }
+
+        function deleteButton(id) {
+            let button = document.getElementById(id);
+            button.remove();
+        }
         
         function addElement(number,lastbutton) {
             const newButton = document.createElement("button");
             newButton.setAttribute('id','button'+number);
             newButton.setAttribute('class','colorholder');
+            newButton.setAttribute('onclick','clickingColor(id)');
             newButton.style.width = "100px";
             newButton.style.height = "100px";
             newButton.style.borderRadius = "50%";
@@ -113,10 +145,26 @@
         }
 
         function reset() {
+            let win_lose_fields = {
+                win: document.getElementById(""),
+                lose: document.getElementById("")
+            }
             let color_buttons = document.querySelectorAll('button[id^="butto"]');
             color_buttons.forEach(element => {
             element.remove();
            });
         }
+    
+        function win() {
+            const winField = document.createElement("div");
+            const winText = document.createElement("p");
+
+            winField.setAttribute('id','winField');
+            winField.style.borderStyle = "none";
+            winText.innerHTML ="You Win";
+            winField.appendChild(winText);
+            document.getElementById("body").insertBefore;
+        }
+        
     </script>
 </html>
