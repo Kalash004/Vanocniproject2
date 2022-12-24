@@ -5,36 +5,94 @@
         <title>Document</title>
     </head>
     <body>
-        <span id="colorcode"><h3>colorcode</h3></span> <br> 
-        <span id="questioncolor"><h3></h3></span>
+        <h3 id="_starting_m">Guess the color</h3>
+        <span id="wrapquestioncolor">
+            <span id="questioncolor"></span>
+        </span>
         <div id="youwin">
             <h3>Win</h3>
-            <p>You Win the color was</p>
+            <p>You Win</p>
         </div>
         <div id="youlose">
-            <h3>Wrong</h3>
-            <p>This was : </p>
-        </div>  
-        <div id="buttons"></div>
-        <h3 id="_starting_m">Guess the color</h3>
+            <h3 style="margin: 5px">Wrong</h3>
+        </div>
+        <section id="buttons"></section>
         <!--
             can be : Try Again. That color was #
             or : Correct! + create button
         -->
         <span id="message"></span>
         <br>
-        <label for="difficulty">Difficulty:</label>
-        <input id="difficulty" type="number">
-        <br>
-        <button onclick="main()" id="play">Play</button>
+        <section id="wrap">
+            <label for="difficulty">Difficulty:</label>
+            <input id="difficulty" type="number">
+            <br>
+            <button onclick="main()" id="play">Play</button>
+        </section>
+        <footer>
+            <hr>
+            Home assignment for WA from Anton Kalashnikov, Jecna.
+        </footer>
     </body>
     <style>
-        #buttons {
-            display: flexbox;
-        }
 
         input {
             width: 50px;
+        }
+
+        #wrapquestioncolor {
+            display: flex;
+            justify-content: center;
+        }
+
+        #questioncolor {
+            margin-left: 40%;
+            margin-right: 40%;
+            font-size: 75px;
+            color: gray;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: center ;
+            flex-wrap: wrap;
+            margin: 5px 5px;
+        }
+
+        #youlose {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+            border-bottom: solid gray 2px;
+        }
+
+        #youwin {
+            font-size: 40px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #wrap {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        #play {
+            height: 50px;
+            width: 100px;
+            margin: 10px;
+            font-size: 40px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 5px purple; 
+        }
+
+        #_starting_m {
+            text-align: center;
+            font-size: 50px;
+            color: purple;
         }
     </style>
     <script> 
@@ -109,14 +167,11 @@
             const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
             let hex = rgb2hex(rgb);
-            console.log(hex);
             if (hex != questioncolor_field.innerHTML && !isWin) {
-                alert("You Lose");
                 lose(id);
             } else if (hex != questioncolor_field.innerHTML && isWin) {
-                
+                // do nothing
             } else {
-
                 win(id);
             }
         }
@@ -163,6 +218,11 @@
             color_buttons.forEach(element => {
             element.remove();
            });
+           let lose_message = document.getElementById("youlose"); 
+           let h4Elems = lose_message.getElementsByTagName("h4");
+           while (h4Elems.length > 0) {
+                lose_message.removeChild(h4Elems[0]);
+           }
         }
     
         function win(id) {
@@ -181,14 +241,14 @@
             const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
             const loseField = document.getElementById("youlose");
             const button = document.getElementById(id);
-            loseField.style.display = "block";
-            const text = document.createElement("p");
+            loseField.style.display = "flex";
+            const text = document.createElement("h4");
             text.innerHTML = rgb2hex(button.style.backgroundColor);
-            text.color = button.style.backgroundColor;
+            text.style.color = button.style.backgroundColor;
+            text.style.margin = "10px";
             loseField.appendChild(text);
 
             deleteButton(id);
         }
-        
     </script>
 </html>
